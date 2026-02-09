@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>STRAVEX PANEL</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:monospace;
+background:black;
+color:#00ff66;
+overflow:auto;
+}
+
+/* Matrix */
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-2;
+}
+
+/* overlay */
+.overlay{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+z-index:-1;
+}
+
+@keyframes softGlow{
+0%{text-shadow:0 0 8px #00ff66;}
+50%{text-shadow:0 0 14px #00ff66;}
+100%{text-shadow:0 0 8px #00ff66;}
+}
+
+header p{
+animation:softGlow 3s infinite;
+}
+
+header{
+text-align:center;
+padding:20px;
+border-bottom:1px solid #00ff66;
+}
+
+.panel{padding:20px;}
+
+input,textarea{
+width:100%;
+background:black;
+border:1px solid #00ff66;
+color:#00ff66;
+padding:10px;
+margin-top:10px;
+}
+
+button{
+margin-top:10px;
+background:black;
+color:#00ff66;
+border:1px solid #00ff66;
+padding:10px;
+}
+
+.post{
+border:1px solid #00ff66;
+margin-top:20px;
+padding:10px;
+}
+
+.post img{width:100%;margin-top:10px;}
+
+.links{text-align:center;margin:20px;}
+
+a{
+color:#00ff66;
+border:1px solid #00ff66;
+padding:10px;
+margin:5px;
+display:inline-block;
+text-decoration:none;
+}
+
+audio{display:none;}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<audio id="music" loop>
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="overlay"></div>
+
+<header>
+
+<p style="font-size:28px;line-height:2;text-shadow:0 0 15px #00ff66;">
+
+👑 مرحباً بكم في عالم STRAVEX_YT 👑  
+
+STRAVEX_YT خبير في صناعة البوتات، تطوير السكريبتات، الأنظمة الذكية، البرمجة المتقدمة.
+
+نحن نصنع:
+⚡ بوتات تيليجرام  
+⚡ بوتات فري فاير  
+⚡ سكريبتات بايثون  
+⚡ أدوات تقنية  
+⚡ حلول أوتوماتيكية  
+
+🔥 STRAVEX — شعارنا غذبهم لا ترحمهم 🔥  
+
+</p>
+
+<marquee>STRAVEX_YT ⚡ Telegram ⚡ YouTube ⚡ Bots ⚡ Scripts</marquee>
+
+</header>
+
+<div class="panel">
+
+<input id="title" placeholder="عنوان المنشور">
+<textarea id="text" placeholder="اكتب منشورك"></textarea>
+<input type="file" id="img">
+
+<button onclick="post()">نشر</button>
+
+<div id="posts"></div>
+
+</div>
+
+<div class="links">
+<a href="https://t.me/stravex_oficiel">Telegram</a>
+<a href="https://youtube.com/@stravex2025">YouTube</a>
+</div>
+
+<script>
+
+/* autoplay fix mobile */
+function playMusic(){
+let m=document.getElementById("music");
+m.play();
+document.removeEventListener("click",playMusic);
+document.removeEventListener("touchstart",playMusic);
+}
+document.addEventListener("click",playMusic);
+document.addEventListener("touchstart",playMusic);
+
+/* Matrix */
+const c=document.getElementById("matrix");
+const ctx=c.getContext("2d");
+c.width=innerWidth;
+c.height=innerHeight;
+
+const chars="STRAVEX0123456789";
+const arr=chars.split("");
+const size=16;
+const cols=c.width/size;
+const drops=Array(Math.floor(cols)).fill(1);
+
+function draw(){
+ctx.fillStyle="rgba(0,0,0,.05)";
+ctx.fillRect(0,0,c.width,c.height);
+ctx.fillStyle="#00ff66";
+ctx.font=size+"px monospace";
+
+drops.forEach((y,i)=>{
+const txt=arr[Math.floor(Math.random()*arr.length)];
+ctx.fillText(txt,i*size,y*size);
+if(y*size>c.height&&Math.random()>0.975)drops[i]=0;
+drops[i]++;
+});
+}
+
+setInterval(draw,33);
+
+/* posts */
+
+function post(){
+let t=document.getElementById("title").value;
+let txt=document.getElementById("text").value;
+let img=document.getElementById("img").files[0];
+if(!t||!txt)return;
+
+let reader=new FileReader();
+reader.onload=()=>{
+posts.innerHTML+=`<div class="post"><h3>${t}</h3><p>${txt}</p><img src="${reader.result}"></div>`;
+};
+if(img)reader.readAsDataURL(img);
+}
+
+</script>
+
+</body>
+</html>

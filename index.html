@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>STRAVEX PANEL</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:monospace;
+background:black;
+color:#00ff66;
+overflow:auto;
+}
+
+/* Matrix */
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-2;
+}
+
+/* overlay */
+.overlay{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+z-index:-1;
+}
+
+/* blinking */
+@keyframes softGlow{
+0%{text-shadow:0 0 8px #00ff66;}
+50%{text-shadow:0 0 14px #00ff66;}
+100%{text-shadow:0 0 8px #00ff66;}
+}
+
+header p{
+animation:softGlow 3s infinite;
+}
+
+/* panel */
+
+header{
+text-align:center;
+padding:20px;
+border-bottom:1px solid #00ff66;
+}
+
+.panel{
+padding:20px;
+}
+
+input,textarea{
+width:100%;
+background:black;
+border:1px solid #00ff66;
+color:#00ff66;
+padding:10px;
+margin-top:10px;
+}
+
+button{
+margin-top:10px;
+background:black;
+color:#00ff66;
+border:1px solid #00ff66;
+padding:10px;
+}
+
+.post{
+border:1px solid #00ff66;
+margin-top:20px;
+padding:10px;
+}
+
+.post img{
+width:100%;
+margin-top:10px;
+}
+
+.links{
+text-align:center;
+margin:20px;
+}
+
+a{
+color:#00ff66;
+border:1px solid #00ff66;
+padding:10px;
+margin:5px;
+display:inline-block;
+text-decoration:none;
+}
+
+audio{
+position:fixed;
+bottom:10px;
+left:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<audio id="music" controls loop>
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="overlay"></div>
+
+<header>
+
+<p style="font-size:28px;line-height:2;text-shadow:0 0 15px #00ff66;">
+
+👑 مرحباً بكم في عالم STRAVEX_YT 👑  
+
+معكم STRAVEX_YT — خبير في صناعة البوتات، تطوير السكريبتات، هندسة الأنظمة، البرمجة المتقدمة، والأدوات التقنية الذكية.  
+لسنا مجرد فريق عادي… نحن عقل رقمي، فكر سيبراني، وروح هاكر أخلاقي.
+
+في STRAVEX نصنع:
+⚡ بوتات تيليجرام احترافية  
+⚡ بوتات فري فاير
+⚡ تكوين تيم يخضع للعمل الجماعي
+⚡ تعليم صنع بوتات
+⚡ أدوات تقنية متقدمة  
+
+نحن نؤمن أن المعرفة قوة.  
+ونؤمن أن البرمجة سلاح.  
+ونؤمن أن المستقبل لمن يتعلم، يطوّر، ويبدع.
+
+هنا ستجد:
+🔥 شروحات حقيقية  
+🔥 مشاريع عملية  
+🔥 أفكار جديدة  
+🔥 تحديثات مستمرة  
+🔥 تجارب من عالم الأمن السيبراني  
+
+STRAVEX_YT لا يتوقف.  
+STRAVEX_YT لا ينسخ.  
+STRAVEX_YT يصنع طريقه بنفسه.
+
+🚀 هدفنا: نشر المعرفة التقنية  
+🧠 رسالتنا: صناعة مطورين أقوياء  
+⚙ رؤيتنا: عالم رقمي ذكي  
+
+إذا وصلت إلى هنا… فأنت اسطورة وSTRAVEX
+يدعمم نحو حلمك.
+
+🔥 STRAVEX — شعارنا غذبهم لا ترحمهم 🔥  
+
+انضم إلينا… وكن جزءاً من الثورة الرقمية.
+
+</p>
+
+<marquee>STRAVEX_YT ⚡ Telegram ⚡ YouTube ⚡ Bots ⚡ Scripts</marquee>
+
+</header>
+
+<div class="panel">
+
+<input id="title" placeholder="عنوان المنشور">
+<textarea id="text" placeholder="اكتب منشورك"></textarea>
+<input type="file" id="img">
+
+<button onclick="post()">نشر</button>
+
+<div id="posts"></div>
+
+</div>
+
+<div class="links">
+<a href="https://t.me/stravex_oficiel">Telegram</a>
+<a href="https://youtube.com/@stravex2025">YouTube</a>
+</div>
+
+<script>
+
+/* Matrix */
+const c=document.getElementById("matrix");
+const ctx=c.getContext("2d");
+c.width=window.innerWidth;
+c.height=window.innerHeight;
+
+const letters="STRAVEX0123456789";
+const arr=letters.split("");
+const size=16;
+const cols=c.width/size;
+const drops=[];
+
+for(let i=0;i<cols;i++)drops[i]=1;
+
+function draw(){
+ctx.fillStyle="rgba(0,0,0,.05)";
+ctx.fillRect(0,0,c.width,c.height);
+ctx.fillStyle="#00ff66";
+ctx.font=size+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+const txt=arr[Math.floor(Math.random()*arr.length)];
+ctx.fillText(txt,i*size,drops[i]*size);
+if(drops[i]*size>c.height && Math.random()>0.975)drops[i]=0;
+drops[i]++;
+}
+}
+
+setInterval(draw,33);
+
+/* posts */
+
+function post(){
+let t=title.value;
+let txt=text.value;
+let img=document.getElementById("img").files[0];
+
+if(!t||!txt)return;
+
+let reader=new FileReader();
+reader.onload=function(){
+
+posts.innerHTML+=`
+<div class="post">
+<h3>${t}</h3>
+<p>${txt}</p>
+<img src="${reader.result}">
+</div>`;
+};
+
+if(img)reader.readAsDataURL(img);
+
+title.value="";
+text.value="";
+}
+
+</script>
+
+</body>
+</html>
